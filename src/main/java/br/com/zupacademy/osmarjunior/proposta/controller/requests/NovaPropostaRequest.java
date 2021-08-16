@@ -4,7 +4,6 @@ import br.com.zupacademy.osmarjunior.proposta.annotations.CpfOrCnpj;
 import br.com.zupacademy.osmarjunior.proposta.model.Endereco;
 import br.com.zupacademy.osmarjunior.proposta.model.Proposta;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -48,6 +47,13 @@ public class NovaPropostaRequest {
      */
     public EnderecoRequest getEndereco() {
         return endereco;
+    }
+
+    /**
+     * Concede acesso ao validator de CPF ou CNPJ unico por proposta
+     */
+    public String getCpfOuCnpj() {
+        return cpfOuCnpj;
     }
 
     public Proposta toProposta() {
