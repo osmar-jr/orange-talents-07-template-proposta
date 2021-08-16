@@ -1,6 +1,7 @@
 package br.com.zupacademy.osmarjunior.proposta.model;
 
 import br.com.zupacademy.osmarjunior.proposta.annotations.CpfOrCnpj;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -15,9 +16,10 @@ import java.util.UUID;
 @Table(name = "tb_proposta")
 public class Proposta {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", nullable = false)
-    private Long id;
+    private String id;
 
     @NotBlank
     private String nome;
@@ -35,9 +37,6 @@ public class Proposta {
     @NotNull @Valid @Embedded
     private Endereco endereco;
 
-    @NotBlank @Column(unique = true)
-    private String serialId;
-
     @Deprecated
     public Proposta() {
     }
@@ -52,13 +51,12 @@ public class Proposta {
         this.email = email;
         this.salario = salario;
         this.endereco = endereco;
-        this.serialId = UUID.randomUUID().toString();
     }
 
     /**
      * Concede o ID serial de proposta para criação do link de acesso.
      */
-    public String getSerialId() {
-        return serialId;
+    public String getId() {
+        return id;
     }
 }

@@ -29,8 +29,8 @@ public class NovaPropostaController {
         Proposta proposta = novaPropostaRequest.toProposta();
         entityManager.persist(proposta);
         URI createdResourceLink = uri
-                .path("/api/v1/propostas/{serialId}")
-                .buildAndExpand(proposta.getSerialId())
+                .path("/api/v1/propostas/{id}")
+                .buildAndExpand(proposta.getId())
                 .toUri();
         return ResponseEntity.created(createdResourceLink).build();
     }
