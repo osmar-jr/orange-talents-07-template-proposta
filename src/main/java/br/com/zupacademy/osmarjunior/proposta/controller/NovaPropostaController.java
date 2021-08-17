@@ -2,6 +2,8 @@ package br.com.zupacademy.osmarjunior.proposta.controller;
 
 import br.com.zupacademy.osmarjunior.proposta.controller.requests.NovaPropostaRequest;
 import br.com.zupacademy.osmarjunior.proposta.model.Proposta;
+import br.com.zupacademy.osmarjunior.proposta.model.enums.ResultadoSolicitacao;
+import br.com.zupacademy.osmarjunior.proposta.service.AnaliseCartao;
 import br.com.zupacademy.osmarjunior.proposta.validators.NaoPermitePropostaComDocumentoDuplicado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,9 @@ public class NovaPropostaController {
     @Autowired
     private NaoPermitePropostaComDocumentoDuplicado naoPermitePropostaComDocumentoDuplicado;
 
+    @Autowired
+    private AnaliseCartao analiseCartao;
+
     @InitBinder
     public void init(WebDataBinder webDataBinder){
         webDataBinder.addValidators(naoPermitePropostaComDocumentoDuplicado);
@@ -35,8 +40,11 @@ public class NovaPropostaController {
     public ResponseEntity<?> novaProposta(@RequestBody @Valid NovaPropostaRequest novaPropostaRequest,
                                           UriComponentsBuilder uri){
         Proposta proposta = novaPropostaRequest.toProposta();
-
         entityManager.persist(proposta);
+
+        ResultadoSolicitacao resultadoSolicitacao = analiseCartao.executa(proposta.toSolicitacaoAnalise());
+        proposta.setStatusProposta(resultadoSolicitacao.toStatusProposta());
+
         URI createdResourceLink = uri
                 .path("/api/v1/propostas/{id}")
                 .buildAndExpand(proposta.getId())

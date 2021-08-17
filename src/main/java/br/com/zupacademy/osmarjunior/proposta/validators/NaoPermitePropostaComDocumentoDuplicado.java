@@ -34,7 +34,7 @@ public class NaoPermitePropostaComDocumentoDuplicado implements Validator {
         List<Proposta> propostasEncontradas = propostaRepository.findByCpfOuCnpj(request.getCpfOuCnpj());
 
         if(!propostasEncontradas.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+            errors.rejectValue("cpfOuCnpj", HttpStatus.UNPROCESSABLE_ENTITY.toString(),
                     "Já existe uma proposta com o número de documento: " + request.getCpfOuCnpj());
         }
 

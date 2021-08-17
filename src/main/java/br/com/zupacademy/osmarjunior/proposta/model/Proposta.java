@@ -1,6 +1,8 @@
 package br.com.zupacademy.osmarjunior.proposta.model;
 
 import br.com.zupacademy.osmarjunior.proposta.annotations.CpfOrCnpj;
+import br.com.zupacademy.osmarjunior.proposta.model.enums.StatusProposta;
+import br.com.zupacademy.osmarjunior.proposta.service.request.SolicitacaoAnalise;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -37,6 +39,9 @@ public class Proposta {
     @NotNull @Valid @Embedded
     private Endereco endereco;
 
+    @Enumerated(EnumType.STRING)
+    private StatusProposta statusProposta;
+
     @Deprecated
     public Proposta() {
     }
@@ -58,5 +63,13 @@ public class Proposta {
      */
     public String getId() {
         return id;
+    }
+
+    public SolicitacaoAnalise toSolicitacaoAnalise() {
+        return new SolicitacaoAnalise(this.cpfOuCnpj, this.nome, this.id);
+    }
+
+    public void setStatusProposta(StatusProposta statusProposta) {
+        this.statusProposta = statusProposta;
     }
 }
