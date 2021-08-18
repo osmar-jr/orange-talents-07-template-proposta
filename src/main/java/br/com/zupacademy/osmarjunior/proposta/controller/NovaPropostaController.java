@@ -3,7 +3,7 @@ package br.com.zupacademy.osmarjunior.proposta.controller;
 import br.com.zupacademy.osmarjunior.proposta.controller.requests.NovaPropostaRequest;
 import br.com.zupacademy.osmarjunior.proposta.model.Proposta;
 import br.com.zupacademy.osmarjunior.proposta.model.enums.ResultadoSolicitacao;
-import br.com.zupacademy.osmarjunior.proposta.service.AnaliseCartao;
+import br.com.zupacademy.osmarjunior.proposta.service.AnaliseCartaoService;
 import br.com.zupacademy.osmarjunior.proposta.validators.NaoPermitePropostaComDocumentoDuplicado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class NovaPropostaController {
     private NaoPermitePropostaComDocumentoDuplicado naoPermitePropostaComDocumentoDuplicado;
 
     @Autowired
-    private AnaliseCartao analiseCartao;
+    private AnaliseCartaoService analiseCartaoService;
 
     @InitBinder
     public void init(WebDataBinder webDataBinder){
@@ -42,7 +42,7 @@ public class NovaPropostaController {
         Proposta proposta = novaPropostaRequest.toProposta();
         entityManager.persist(proposta);
 
-        ResultadoSolicitacao resultadoSolicitacao = analiseCartao.executa(proposta.toSolicitacaoAnalise());
+        ResultadoSolicitacao resultadoSolicitacao = analiseCartaoService.executa(proposta.toSolicitacaoAnalise());
         proposta.setStatusProposta(resultadoSolicitacao.toStatusProposta());
 
         URI createdResourceLink = uri

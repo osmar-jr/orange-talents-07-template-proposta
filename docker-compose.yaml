@@ -3,9 +3,6 @@ services:
 
   zookeeper:
     image: "confluentinc/cp-zookeeper:5.2.1"
-    mem_limit: 512m
-    mem_reservation: 128M
-    cpus: 0.5
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -13,9 +10,6 @@ services:
 
   kafka:
     image: "confluentinc/cp-kafka:5.2.1"
-    mem_limit: 512m
-    mem_reservation: 128M
-    cpus: 0.5
     ports:
       - 9092:9092
     depends_on:
@@ -30,9 +24,6 @@ services:
 
   postgres:
     image: 'postgres:9.6-alpine'
-    mem_limit: 512m
-    mem_reservation: 128M
-    cpus: 0.5
     volumes:
       - postgres-volume:/var/lib/postgresql/data
     ports:
@@ -45,9 +36,6 @@ services:
 
   keycloak:
     image: jboss/keycloak:11.0.0
-    mem_limit: 512m
-    mem_reservation: 128M
-    cpus: 0.5
     ports:
       - 18443:8443
       - 18080:8080
@@ -77,9 +65,6 @@ services:
 
   analise:
     image: 'zupacademy/analise-financeira'
-    mem_limit: 512m
-    mem_reservation: 128M
-    cpus: 0.5
     ports:
       - 9999:9999
     environment:
@@ -90,21 +75,16 @@ services:
 
   contas:
     image: 'zupacademy/contas'
-    mem_limit: 512m
-    mem_reservation: 128M
-    cpus: 0.5
     ports:
       - 8888:8888
     environment:
       SERVER_PORT: 8888
       LOG_LEVEL: INFO
       JAEGER_ENDPOINT: http://jaeger:14268/api/traces
+    restart: on-failure
 
   transacoes:
     image: 'zupacademy/transacoes'
-    mem_limit: 512m
-    mem_reservation: 128M
-    cpus: 0.5
     ports:
       - 7777:7777
     depends_on:
@@ -117,9 +97,6 @@ services:
 
   jaeger:
     image: jaegertracing/all-in-one:1.21.0
-    mem_limit: 512m
-    mem_reservation: 128M
-    cpus: 0.5
     ports:
       - 5775:5775/udp
       - 6831:6831/udp
@@ -157,9 +134,6 @@ services:
 
   vault:
     image: vault:1.5.3
-    mem_limit: 512m
-    mem_reservation: 128M
-    cpus: 0.5
     ports:
       - 8200:8200
     environment:

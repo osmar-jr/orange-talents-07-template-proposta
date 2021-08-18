@@ -3,6 +3,10 @@ package br.com.zupacademy.osmarjunior.proposta.model;
 import br.com.zupacademy.osmarjunior.proposta.annotations.CpfOrCnpj;
 import br.com.zupacademy.osmarjunior.proposta.model.enums.StatusProposta;
 import br.com.zupacademy.osmarjunior.proposta.service.request.SolicitacaoAnalise;
+import br.com.zupacademy.osmarjunior.proposta.service.response.dto.RenegociacaoDto;
+import br.com.zupacademy.osmarjunior.proposta.service.response.dto.VencimentoDto;
+import ch.qos.logback.core.util.COWArrayList;
+import com.zaxxer.hikari.util.ConcurrentBag;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -12,6 +16,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -42,6 +50,28 @@ public class Proposta {
     @Enumerated(EnumType.STRING)
     private StatusProposta statusProposta;
 
+    private String numeroCartao;
+    private LocalDateTime cartaoEmitidoEm;
+    private BigDecimal limiteCartao;
+
+    @OneToMany(mappedBy = "proposta", cascade = CascadeType.MERGE)
+    private Set<Bloqueio> bloqueios = new HashSet<>();
+
+    @OneToMany(mappedBy = "proposta", cascade = CascadeType.MERGE)
+    private Set<Aviso> avisos;
+
+    @OneToMany(mappedBy = "proposta", cascade = CascadeType.MERGE)
+    private Set<Carteira> carteiras = new HashSet<>();
+
+    @OneToMany(mappedBy = "proposta", cascade = CascadeType.MERGE)
+    private Set<Parcela> parcelas = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "proposta", cascade = CascadeType.MERGE)
+    private Set<Renegociacao> renegociacoes = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "proposta", cascade = CascadeType.MERGE)
+    private Set<Vencimento> vencimentos = new HashSet<>();
+
     @Deprecated
     public Proposta() {
     }
@@ -71,5 +101,28 @@ public class Proposta {
 
     public void setStatusProposta(StatusProposta statusProposta) {
         this.statusProposta = statusProposta;
+    }
+
+    public void atualizaDadosDeCartao(String cartaoId,
+                                      LocalDateTime cartaoEmitidoEm,
+                                      BigDecimal limite, Set<Bloqueio> bloqueios,
+                                      Set<Aviso> avisos,
+                                      Set<Carteira> carteiras,
+                                      Set<Parcela> parcelas) {
+        this.numeroCartao = cartaoId;
+        this.cartaoEmitidoEm = cartaoEmitidoEm;
+        this.limiteCartao = limite;
+        this.bloqueios.addAll(bloqueios);
+        this.avisos.addAll(avisos);
+        this.carteiras.addAll(carteiras);
+        this.parcelas = parcelas;;
+    }
+
+    public void atualizaVencimento(Optional<VencimentoDto> vencimento) {
+        vencimento.ifPresent(vencimentoDto -> this.vencimentos.add(vencimentoDto.toVencimento(this)));
+    }
+
+    public void atualizaRenegociacao(Optional<RenegociacaoDto> renegociacao) {
+        renegociacao.ifPresent(renegociacaoDto -> this.renegociacoes.add(renegociacaoDto.toRenegociacao(this)));
     }
 }
