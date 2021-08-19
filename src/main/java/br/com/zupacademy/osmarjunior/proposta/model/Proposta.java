@@ -1,6 +1,7 @@
 package br.com.zupacademy.osmarjunior.proposta.model;
 
 import br.com.zupacademy.osmarjunior.proposta.annotations.CpfOrCnpj;
+import br.com.zupacademy.osmarjunior.proposta.controller.response.PropostaResponse;
 import br.com.zupacademy.osmarjunior.proposta.model.enums.StatusProposta;
 import br.com.zupacademy.osmarjunior.proposta.service.request.SolicitacaoAnalise;
 import br.com.zupacademy.osmarjunior.proposta.service.response.dto.RenegociacaoDto;
@@ -124,5 +125,9 @@ public class Proposta {
 
     public void atualizaRenegociacao(Optional<RenegociacaoDto> renegociacao) {
         renegociacao.ifPresent(renegociacaoDto -> this.renegociacoes.add(renegociacaoDto.toRenegociacao(this)));
+    }
+
+    public PropostaResponse toResponse() {
+        return new PropostaResponse(this.id, this.nome, this.statusProposta);
     }
 }
