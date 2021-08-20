@@ -24,7 +24,6 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_proposta")
 public class Proposta {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -51,27 +50,8 @@ public class Proposta {
     @Enumerated(EnumType.STRING)
     private StatusProposta statusProposta;
 
-    private String numeroCartao;
-    private LocalDateTime cartaoEmitidoEm;
-    private BigDecimal limiteCartao;
-
-    @OneToMany(mappedBy = "proposta", cascade = CascadeType.MERGE)
-    private Set<Bloqueio> bloqueios = new HashSet<>();
-
-    @OneToMany(mappedBy = "proposta", cascade = CascadeType.MERGE)
-    private Set<Aviso> avisos;
-
-    @OneToMany(mappedBy = "proposta", cascade = CascadeType.MERGE)
-    private Set<Carteira> carteiras = new HashSet<>();
-
-    @OneToMany(mappedBy = "proposta", cascade = CascadeType.MERGE)
-    private Set<Parcela> parcelas = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "proposta", cascade = CascadeType.MERGE)
-    private Set<Renegociacao> renegociacoes = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "proposta", cascade = CascadeType.MERGE)
-    private Set<Vencimento> vencimentos = new HashSet<>();
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "proposta", cascade = CascadeType.MERGE)
+    private Cartao cartao;
 
     @Deprecated
     public Proposta() {
@@ -104,30 +84,11 @@ public class Proposta {
         this.statusProposta = statusProposta;
     }
 
-    public void atualizaDadosDeCartao(String cartaoId,
-                                      LocalDateTime cartaoEmitidoEm,
-                                      BigDecimal limite, Set<Bloqueio> bloqueios,
-                                      Set<Aviso> avisos,
-                                      Set<Carteira> carteiras,
-                                      Set<Parcela> parcelas) {
-        this.numeroCartao = cartaoId;
-        this.cartaoEmitidoEm = cartaoEmitidoEm;
-        this.limiteCartao = limite;
-        this.bloqueios.addAll(bloqueios);
-        this.avisos.addAll(avisos);
-        this.carteiras.addAll(carteiras);
-        this.parcelas = parcelas;;
-    }
-
-    public void atualizaVencimento(Optional<VencimentoDto> vencimento) {
-        vencimento.ifPresent(vencimentoDto -> this.vencimentos.add(vencimentoDto.toVencimento(this)));
-    }
-
-    public void atualizaRenegociacao(Optional<RenegociacaoDto> renegociacao) {
-        renegociacao.ifPresent(renegociacaoDto -> this.renegociacoes.add(renegociacaoDto.toRenegociacao(this)));
-    }
-
     public PropostaResponse toResponse() {
         return new PropostaResponse(this.id, this.nome, this.statusProposta);
+    }
+
+    public void atualizaCartao(Cartao cartao) {
+        this.cartao = cartao;
     }
 }

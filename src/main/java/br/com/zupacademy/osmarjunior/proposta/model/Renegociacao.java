@@ -13,25 +13,24 @@ public class Renegociacao {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String idRenegociacaoDoClient;
+    private String idRenegociacaoCartoesClient;
     private Integer quantidade;
     private BigDecimal valor;
     private LocalDateTime dataDeCriacao;
 
     @ManyToOne
-    private Proposta proposta;
+    private Cartao cartao;
 
     @Deprecated
     public Renegociacao() {
     }
 
-    public Renegociacao(String idRenegociacaoDoClient, Integer quantidade, BigDecimal valor, LocalDateTime dataDeCriacao, Proposta proposta) {
-
-        this.idRenegociacaoDoClient = idRenegociacaoDoClient;
+    public Renegociacao(String idRenegociacaoCartoesClient, Integer quantidade, BigDecimal valor, LocalDateTime dataDeCriacao, Cartao cartao) {
+        this.idRenegociacaoCartoesClient = idRenegociacaoCartoesClient;
         this.quantidade = quantidade;
         this.valor = valor;
         this.dataDeCriacao = dataDeCriacao;
-        this.proposta = proposta;
+        this.cartao = cartao;
     }
 
     @Override
@@ -39,11 +38,11 @@ public class Renegociacao {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Renegociacao that = (Renegociacao) o;
-        return Objects.equals(id, that.id) && Objects.equals(idRenegociacaoDoClient, that.idRenegociacaoDoClient) && Objects.equals(quantidade, that.quantidade) && Objects.equals(valor, that.valor) && Objects.equals(dataDeCriacao, that.dataDeCriacao) && Objects.equals(proposta, that.proposta);
+        return Objects.equals(id, that.id) && Objects.equals(idRenegociacaoCartoesClient, that.idRenegociacaoCartoesClient) && Objects.equals(quantidade, that.quantidade) && Objects.equals(valor, that.valor) && Objects.equals(dataDeCriacao, that.dataDeCriacao) && Objects.equals(cartao, that.cartao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, idRenegociacaoDoClient, quantidade, valor, dataDeCriacao, proposta);
+        return Objects.hash(id, idRenegociacaoCartoesClient, quantidade, valor, dataDeCriacao, cartao);
     }
 }

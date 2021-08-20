@@ -14,17 +14,16 @@ public class Aviso {
     private String destino;
 
     @ManyToOne
-    private Proposta proposta;
+    private Cartao cartao;
 
     @Deprecated
     public Aviso() {
     }
 
-    public Aviso(String validoAte, String destino, Proposta proposta) {
-
+    public Aviso(String validoAte, String destino, Cartao cartao) {
         this.validoAte = validoAte;
         this.destino = destino;
-        this.proposta = proposta;
+        this.cartao = cartao;
     }
 
     @Override
@@ -32,11 +31,11 @@ public class Aviso {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Aviso aviso = (Aviso) o;
-        return Objects.equals(id, aviso.id) && Objects.equals(validoAte, aviso.validoAte) && Objects.equals(destino, aviso.destino) && Objects.equals(proposta, aviso.proposta);
+        return Objects.equals(id, aviso.id) && Objects.equals(validoAte, aviso.validoAte) && Objects.equals(destino, aviso.destino) && Objects.equals(cartao, aviso.cartao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, validoAte, destino, proposta);
+        return Objects.hash(id, validoAte, destino, cartao);
     }
 }

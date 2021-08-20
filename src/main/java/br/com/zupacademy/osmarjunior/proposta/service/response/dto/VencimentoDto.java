@@ -1,5 +1,6 @@
 package br.com.zupacademy.osmarjunior.proposta.service.response.dto;
 
+import br.com.zupacademy.osmarjunior.proposta.model.Cartao;
 import br.com.zupacademy.osmarjunior.proposta.model.Proposta;
 import br.com.zupacademy.osmarjunior.proposta.model.Vencimento;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -28,7 +29,7 @@ public class VencimentoDto {
                 '}';
     }
 
-    public Vencimento toVencimento(Proposta proposta) {
-        return new Vencimento(this.id, this.dia, this.dataDeCriacao, proposta);
+    public Vencimento toVencimento(Cartao cartao) {
+        return new Vencimento(this.id, this.dia, this.dataDeCriacao, cartao);
     }
 }

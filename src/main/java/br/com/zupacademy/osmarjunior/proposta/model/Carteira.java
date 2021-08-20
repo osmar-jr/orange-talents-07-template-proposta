@@ -11,25 +11,24 @@ public class Carteira {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String idCartoesClient;
+    private String idCarteiraCartoesClient;
     private String email;
     private LocalDateTime associadaEm;
     private String emissor;
 
     @ManyToOne
-    private Proposta proposta;
+    private Cartao cartao;
 
     @Deprecated
     public Carteira() {
     }
 
-    public Carteira(String idCartoesClient, String email, LocalDateTime associadaEm, String emissor, Proposta proposta) {
-
-        this.idCartoesClient = idCartoesClient;
+    public Carteira(String idCarteiraCartoesClient, String email, LocalDateTime associadaEm, String emissor, Cartao cartao) {
+        this.idCarteiraCartoesClient = idCarteiraCartoesClient;
         this.email = email;
         this.associadaEm = associadaEm;
         this.emissor = emissor;
-        this.proposta = proposta;
+        this.cartao = cartao;
     }
 
     @Override
@@ -37,11 +36,11 @@ public class Carteira {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Carteira carteira = (Carteira) o;
-        return Objects.equals(id, carteira.id) && Objects.equals(idCartoesClient, carteira.idCartoesClient) && Objects.equals(email, carteira.email) && Objects.equals(associadaEm, carteira.associadaEm) && Objects.equals(emissor, carteira.emissor) && Objects.equals(proposta, carteira.proposta);
+        return Objects.equals(id, carteira.id) && Objects.equals(idCarteiraCartoesClient, carteira.idCarteiraCartoesClient) && Objects.equals(email, carteira.email) && Objects.equals(associadaEm, carteira.associadaEm) && Objects.equals(emissor, carteira.emissor) && Objects.equals(cartao, carteira.cartao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, idCartoesClient, email, associadaEm, emissor, proposta);
+        return Objects.hash(id, idCarteiraCartoesClient, email, associadaEm, emissor, cartao);
     }
 }

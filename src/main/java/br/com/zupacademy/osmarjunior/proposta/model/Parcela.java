@@ -11,23 +11,22 @@ public class Parcela {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String idParcelaDoClient;
+    private String idParcelaCartoesClient;
     private Integer quantidade;
     private BigDecimal valor;
 
     @ManyToOne
-    private Proposta proposta;
+    private Cartao cartao;
 
     @Deprecated
     public Parcela() {
     }
 
-    public Parcela(String idParcelaDoClient, Integer quantidade, BigDecimal valor, Proposta proposta) {
-
-        this.idParcelaDoClient = idParcelaDoClient;
+    public Parcela(String idParcelaCartoesClient, Integer quantidade, BigDecimal valor, Cartao cartao) {
+        this.idParcelaCartoesClient = idParcelaCartoesClient;
         this.quantidade = quantidade;
         this.valor = valor;
-        this.proposta = proposta;
+        this.cartao = cartao;
     }
 
     @Override
@@ -35,11 +34,11 @@ public class Parcela {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Parcela parcela = (Parcela) o;
-        return Objects.equals(id, parcela.id) && Objects.equals(idParcelaDoClient, parcela.idParcelaDoClient) && Objects.equals(quantidade, parcela.quantidade) && Objects.equals(valor, parcela.valor) && Objects.equals(proposta, parcela.proposta);
+        return Objects.equals(id, parcela.id) && Objects.equals(idParcelaCartoesClient, parcela.idParcelaCartoesClient) && Objects.equals(quantidade, parcela.quantidade) && Objects.equals(valor, parcela.valor) && Objects.equals(cartao, parcela.cartao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, idParcelaDoClient, quantidade, valor, proposta);
+        return Objects.hash(id, idParcelaCartoesClient, quantidade, valor, cartao);
     }
 }

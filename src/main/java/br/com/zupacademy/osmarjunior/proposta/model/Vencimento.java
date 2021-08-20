@@ -11,23 +11,22 @@ public class Vencimento {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String idVencimentoDoClient;
+    private String idVencimentoCartoesClient;
     private Integer dia;
     private LocalDateTime dataDeCriacao;
 
     @ManyToOne
-    private Proposta proposta;
+    private Cartao cartao;
 
     @Deprecated
     public Vencimento() {
     }
 
-    public Vencimento(String idVencimentoDoClient, Integer dia, LocalDateTime dataDeCriacao, Proposta proposta) {
-
-        this.idVencimentoDoClient = idVencimentoDoClient;
+    public Vencimento(String idVencimentoCartoesClient, Integer dia, LocalDateTime dataDeCriacao, Cartao cartao) {
+        this.idVencimentoCartoesClient = idVencimentoCartoesClient;
         this.dia = dia;
         this.dataDeCriacao = dataDeCriacao;
-        this.proposta = proposta;
+        this.cartao = cartao;
     }
 
     @Override
@@ -35,11 +34,11 @@ public class Vencimento {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vencimento that = (Vencimento) o;
-        return Objects.equals(id, that.id) && Objects.equals(idVencimentoDoClient, that.idVencimentoDoClient) && Objects.equals(dia, that.dia) && Objects.equals(dataDeCriacao, that.dataDeCriacao) && Objects.equals(proposta, that.proposta);
+        return Objects.equals(id, that.id) && Objects.equals(idVencimentoCartoesClient, that.idVencimentoCartoesClient) && Objects.equals(dia, that.dia) && Objects.equals(dataDeCriacao, that.dataDeCriacao) && Objects.equals(cartao, that.cartao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, idVencimentoDoClient, dia, dataDeCriacao, proposta);
+        return Objects.hash(id, idVencimentoCartoesClient, dia, dataDeCriacao, cartao);
     }
 }

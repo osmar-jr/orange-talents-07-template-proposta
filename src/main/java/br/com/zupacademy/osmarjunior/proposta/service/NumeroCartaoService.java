@@ -2,18 +2,15 @@ package br.com.zupacademy.osmarjunior.proposta.service;
 
 import br.com.zupacademy.osmarjunior.proposta.clients.CartoesClient;
 import br.com.zupacademy.osmarjunior.proposta.model.*;
+import br.com.zupacademy.osmarjunior.proposta.model.enums.StatusProposta;
 import br.com.zupacademy.osmarjunior.proposta.repository.PropostaRepository;
 import br.com.zupacademy.osmarjunior.proposta.service.response.ResultadoAnaliseCartao;
-import br.com.zupacademy.osmarjunior.proposta.service.response.dto.*;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Set;
 
 @Component
 public class NumeroCartaoService {
@@ -26,9 +23,9 @@ public class NumeroCartaoService {
 
     @Scheduled(fixedDelayString = "${feign.cartoes.fixed-delay}", initialDelayString = "${feign.cartoes.intial-delay}")
     public void tenteObterNumeroCartao(){
-        Collection<Proposta> elegiveisSemCartao = propostaRepository.getPropostasElegiveisSemCartao();
+        Collection<Proposta> elegiveisSemCartao = propostaRepository.findByStatusPropostaAndCartaoIsNull(StatusProposta.ELEGIVEL);
         if(elegiveisSemCartao.isEmpty()){
-            System.out.println("\n\n\nNADA PRA ATUALIZAR\n\n\n");
+            System.out.println("\nNADA PRA ATUALIZAR\n");
             return;
         }
 
@@ -39,30 +36,19 @@ public class NumeroCartaoService {
         try {
             ResultadoAnaliseCartao resultadoAnaliseCartao = cartoesClient.gerarCartao(proposta.toSolicitacaoAnalise());
 
-            Set<Bloqueio> bloqueios = BloqueioDto.toBloqueiosList(resultadoAnaliseCartao.getBloqueios(), proposta);
-            Set<Aviso> avisos = AvisoDto.toAvisosList(resultadoAnaliseCartao.getAvisos(), proposta);
-            Set<Carteira> carteiras = CarteiraDto.toCarteirasList(resultadoAnaliseCartao.getCarteiras(), proposta);
-            Set<Parcela> parcelas = ParcelaDto.toParcelasList(resultadoAnaliseCartao.getParcelas(), proposta);
-            String cartaoId = resultadoAnaliseCartao.getId();
-            LocalDateTime cartaoEmitidoEm = resultadoAnaliseCartao.getEmitidoEm();
-            BigDecimal limite = resultadoAnaliseCartao.getLimite();
-
-            proposta.atualizaVencimento(resultadoAnaliseCartao.getVencimento());
-            proposta.atualizaRenegociacao(resultadoAnaliseCartao.getRenegociacao());
-
-            proposta.atualizaDadosDeCartao(cartaoId, cartaoEmitidoEm, limite, bloqueios, avisos, carteiras, parcelas);
-
+            Cartao cartao = resultadoAnaliseCartao.toCartao(proposta);
+            proposta.atualizaCartao(cartao);
             propostaRepository.save(proposta);
 
-            System.out.println("\n\n\nSALVOU ATUALIZAÇÕES\n\n\n");
+            System.out.println("\nSALVOU ATUALIZAÇÕES\n");
 
         } catch (FeignException.UnprocessableEntity e){
-            System.out.println("\n\n\nDEU RUIM HTTP 422\n\n\n");
+            System.out.println("\nDEU RUIM HTTP 422\nERROR: " + e.getMessage());
             e.printStackTrace();
 
         } catch (FeignException e){
 
-            System.out.println("\n\n\nDEU RUIM FEIGN EXCEPTION\n\n\n");
+            System.out.println("\nDEU RUIM FEIGN EXCEPTION\nERROR: " + e.getMessage());
             e.printStackTrace();
         }
     }

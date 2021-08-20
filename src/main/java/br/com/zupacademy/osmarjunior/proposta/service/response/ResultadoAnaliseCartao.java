@@ -1,5 +1,7 @@
 package br.com.zupacademy.osmarjunior.proposta.service.response;
 
+import br.com.zupacademy.osmarjunior.proposta.model.Cartao;
+import br.com.zupacademy.osmarjunior.proposta.model.Proposta;
 import br.com.zupacademy.osmarjunior.proposta.service.response.dto.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -54,35 +56,19 @@ public class ResultadoAnaliseCartao {
         return id;
     }
 
-    public LocalDateTime getEmitidoEm() {
-        return emitidoEm;
+    public Cartao toCartao(Proposta proposta) {
+        Cartao cartao = new Cartao(this.id, this.emitidoEm, this.limite, this.titular, proposta);
+
+        atualizarCartao(cartao);
+        return cartao;
     }
 
-    public Set<BloqueioDto> getBloqueios() {
-        return bloqueios;
-    }
-
-    public Set<AvisoDto> getAvisos() {
-        return avisos;
-    }
-
-    public Set<CarteiraDto> getCarteiras() {
-        return carteiras;
-    }
-
-    public Set<ParcelaDto> getParcelas() {
-        return parcelas;
-    }
-
-    public BigDecimal getLimite() {
-        return limite;
-    }
-
-    public Optional<RenegociacaoDto> getRenegociacao() {
-        return Optional.ofNullable(this.renegociacao);
-    }
-
-    public Optional<VencimentoDto> getVencimento() {
-        return Optional.ofNullable(this.vencimento);
+    private void atualizarCartao(Cartao cartao) {
+        cartao.atualizaBloqueios(this.bloqueios);
+        cartao.atualizaAvisos(this.avisos);
+        cartao.atualizaCarteiras(this.carteiras);
+        cartao.atualizaParcelas(this.parcelas);
+        cartao.atualizaRenegociacoes(Optional.ofNullable(this.renegociacao));
+        cartao.atualizaVencimento(Optional.ofNullable(this.vencimento));
     }
 }

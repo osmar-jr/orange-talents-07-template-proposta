@@ -1,0 +1,15 @@
+
+# Build image
+docker build -t osmar-jr/proposta .
+
+# Remove container and image
+docker rmi osmar-jr/proposta -f
+
+# Clean caching
+docker builder prune
+
+# Up the containairs on composer
+docker-compose up -d
+
+# Remove all images
+docker rmi -f $(docker images -a -q)

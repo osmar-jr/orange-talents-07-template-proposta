@@ -111,20 +111,14 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.22.0
-    mem_limit: 512m
-    mem_reservation: 128M
-    cpus: 0.5
     volumes:
-    #  - ./prometheus.yml:/etc/prometheus/prometheus.yml
-     - prometheus-volume:/etc/prometheus/
+      #  - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-volume:/etc/prometheus/
     ports:
       - "9090:9090"
 
   grafana:
     image: grafana/grafana:7.3.4
-    mem_limit: 512m
-    mem_reservation: 128M
-    cpus: 0.5
     volumes:
       - grafana-volume:/var/lib/grafana
     ports:
@@ -141,7 +135,34 @@ services:
       VAULT_TOKEN: ee413645-dbe8-4848-afc6-6bb2768ada75
       VAULT_ADDR: http://127.0.0.1:8200
 
+  propostas-webservice:
+    image: "osmar-jr/proposta"
+    ports:
+      - 8081:8080
+    depends_on:
+      - mysql-propostas
+      - analise
+    environment:
+      URL_DATABASE: jdbc:mysql://mysql-propostas:3306/proposta
+      DATABASE_USER: root
+      DATABASE_PASSWORD: root
+      DDL: update
+      ANALISE_PROPOSTAS_CLIENT_URL: http://analise:9999
+      CARTOES_CLIENT_URL: http://contas:8888
+
+  mysql-propostas:
+    image: mysql
+    volumes:
+      - mysql-propostas-volume:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "proposta"
+    restart: on-failure
+
 volumes:
   grafana-volume:
   prometheus-volume:
   postgres-volume:
+  mysql-propostas-volume:

@@ -1,5 +1,6 @@
 package br.com.zupacademy.osmarjunior.proposta.service.response.dto;
 
+import br.com.zupacademy.osmarjunior.proposta.model.Cartao;
 import br.com.zupacademy.osmarjunior.proposta.model.Carteira;
 import br.com.zupacademy.osmarjunior.proposta.model.Proposta;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -24,13 +25,13 @@ public class CarteiraDto {
         this.emissor = emissor;
     }
 
-    public static Set<Carteira> toCarteirasList(Set<CarteiraDto> carteiras, Proposta proposta) {
+    public static Set<Carteira> toCarteirasList(Set<CarteiraDto> carteiras, Cartao cartao) {
         return carteiras.stream()
-                .map(carteiraDto -> carteiraDto.toCarteira(proposta))
+                .map(carteiraDto -> carteiraDto.toCarteira(cartao))
                 .collect(Collectors.toSet());
     }
 
-    private Carteira toCarteira(Proposta proposta) {
-        return new Carteira(this.id, this.email, this.associadaEm, this.emissor, proposta);
+    private Carteira toCarteira(Cartao cartao) {
+        return new Carteira(this.id, this.email, this.associadaEm, this.emissor, cartao);
     }
 }

@@ -1,5 +1,6 @@
 package br.com.zupacademy.osmarjunior.proposta.service.response.dto;
 
+import br.com.zupacademy.osmarjunior.proposta.model.Cartao;
 import br.com.zupacademy.osmarjunior.proposta.model.Proposta;
 import br.com.zupacademy.osmarjunior.proposta.model.Renegociacao;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -22,7 +23,7 @@ public class RenegociacaoDto {
         this.dataDeCriacao = dataDeCriacao;
     }
 
-    public Renegociacao toRenegociacao(Proposta proposta) {
-        return new Renegociacao(this.id, this.quantidade, this.valor, this.dataDeCriacao, proposta);
+    public Renegociacao toRenegociacao(Cartao cartao) {
+        return new Renegociacao(this.id, this.quantidade, this.valor, this.dataDeCriacao, cartao);
     }
 }

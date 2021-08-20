@@ -1,7 +1,7 @@
 package br.com.zupacademy.osmarjunior.proposta.service.response.dto;
 
 import br.com.zupacademy.osmarjunior.proposta.model.Bloqueio;
-import br.com.zupacademy.osmarjunior.proposta.model.Proposta;
+import br.com.zupacademy.osmarjunior.proposta.model.Cartao;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
@@ -25,15 +25,15 @@ public class BloqueioDto {
         this.ativo = ativo;
     }
 
-    public static Set<Bloqueio> toBloqueiosList(Set<BloqueioDto> bloqueios, Proposta proposta) {
+    public static Set<Bloqueio> toBloqueiosList(Set<BloqueioDto> bloqueios, Cartao cartao) {
         return bloqueios
                 .stream()
-                .map(bloqueioDto -> bloqueioDto.toBloqueio(proposta))
+                .map(bloqueioDto -> bloqueioDto.toBloqueio(cartao))
                 .collect(Collectors.toSet());
     }
 
 
-    public Bloqueio toBloqueio(Proposta proposta){
-        return new Bloqueio(this.id, this.bloqueadoEm, this.sistemaResponsavel, this.ativo, proposta);
+    private Bloqueio toBloqueio(Cartao cartao){
+        return new Bloqueio(this.id, this.bloqueadoEm, this.sistemaResponsavel, this.ativo, cartao);
     }
 }
