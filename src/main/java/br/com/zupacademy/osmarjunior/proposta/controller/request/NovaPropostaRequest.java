@@ -1,4 +1,4 @@
-package br.com.zupacademy.osmarjunior.proposta.controller.requests;
+package br.com.zupacademy.osmarjunior.proposta.controller.request;
 
 import br.com.zupacademy.osmarjunior.proposta.annotations.CpfOrCnpj;
 import br.com.zupacademy.osmarjunior.proposta.model.Endereco;

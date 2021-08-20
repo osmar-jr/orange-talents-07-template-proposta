@@ -1,6 +1,6 @@
 package br.com.zupacademy.osmarjunior.proposta.controller;
 
-import br.com.zupacademy.osmarjunior.proposta.controller.requests.NovaPropostaRequest;
+import br.com.zupacademy.osmarjunior.proposta.controller.request.NovaPropostaRequest;
 import br.com.zupacademy.osmarjunior.proposta.model.Proposta;
 import br.com.zupacademy.osmarjunior.proposta.model.enums.ResultadoSolicitacao;
 import br.com.zupacademy.osmarjunior.proposta.service.AnaliseCartaoService;

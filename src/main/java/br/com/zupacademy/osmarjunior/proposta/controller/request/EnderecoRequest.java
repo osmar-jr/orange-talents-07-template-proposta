@@ -1,13 +1,11 @@
-package br.com.zupacademy.osmarjunior.proposta.controller.requests;
+package br.com.zupacademy.osmarjunior.proposta.controller.request;
 
 import br.com.zupacademy.osmarjunior.proposta.model.Endereco;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.rmi.MarshalledObject;
 
 public class EnderecoRequest {
 
