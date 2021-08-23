@@ -136,12 +136,13 @@ services:
       VAULT_ADDR: http://127.0.0.1:8200
 
   propostas-webservice:
-    image: "osmar-jr/proposta"
+    image: "osmarzup/proposta"
     ports:
       - 8081:8080
     depends_on:
       - mysql-propostas
       - analise
+      - keycloak
     environment:
       URL_DATABASE: jdbc:mysql://mysql-propostas:3306/proposta
       DATABASE_USER: root
@@ -149,6 +150,9 @@ services:
       DDL: update
       ANALISE_PROPOSTAS_CLIENT_URL: http://analise:9999
       CARTOES_CLIENT_URL: http://contas:8888
+      KEYCLOAK_ISSUER_URI: http://keycloak:18080/auth/realms/proposta-realm
+      KEYCLOAK_JWKS_URI: http://keycloak:18080/auth/realms/proposta-realm/protocol/openid-connect/certs
+    restart: on-failure
 
   mysql-propostas:
     image: mysql
