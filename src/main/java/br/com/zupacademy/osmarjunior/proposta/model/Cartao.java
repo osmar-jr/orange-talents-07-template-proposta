@@ -1,5 +1,6 @@
 package br.com.zupacademy.osmarjunior.proposta.model;
 
+import br.com.zupacademy.osmarjunior.proposta.model.enums.StatusCartao;
 import br.com.zupacademy.osmarjunior.proposta.service.response.dto.*;
 
 import javax.persistence.*;
@@ -42,6 +43,9 @@ public class Cartao {
     @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
     private Set<Parcela> parcelas = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    private StatusCartao statusCartao;
+
 
     @Deprecated
     public Cartao() {
@@ -53,6 +57,7 @@ public class Cartao {
         this.limiteCartao = limiteCartao;
         this.titular = titular;
         this.proposta = proposta;
+        this.statusCartao = StatusCartao.ATIVO;
     }
 
     public void atualizaBloqueios(Set<BloqueioDto> bloqueios) {
@@ -91,5 +96,19 @@ public class Cartao {
 
     public Long getId() {
         return id;
+    }
+
+    public String getNumeroCartao() {
+        return numeroCartao;
+    }
+
+    public void atualizaStatusCartao(StatusCartao statusCartao) {
+        if(!this.statusCartao.equals(statusCartao)){
+            this.statusCartao = statusCartao;
+        }
+    }
+
+    public boolean isBloqueado() {
+        return this.statusCartao.equals(StatusCartao.BLOQUEADO);
     }
 }

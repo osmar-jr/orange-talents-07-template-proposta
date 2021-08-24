@@ -1,5 +1,7 @@
 package br.com.zupacademy.osmarjunior.proposta.model;
 
+import br.com.zupacademy.osmarjunior.proposta.service.request.SolicitacaoBloqueio;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,14 +18,12 @@ public class Bloqueio {
 
     private LocalDateTime bloqueadoEm;
 
-    private String sistemaResponsavel;
-
     private Boolean ativo;
 
     @ManyToOne
     private Cartao cartao;
 
-    private String userAgent;
+    private String sistemaResponsavel;
     private String ip;
 
     @Deprecated
@@ -38,8 +38,8 @@ public class Bloqueio {
         this.cartao = cartao;
     }
 
-    public Bloqueio(String userAgent, String ip, Cartao cartao) {
-        this.userAgent = userAgent;
+    public Bloqueio(String sistemaResponsavel, String ip, Cartao cartao) {
+        this.sistemaResponsavel = sistemaResponsavel;
         this.ip = ip;
         this.cartao = cartao;
         this.bloqueadoEm = LocalDateTime.now();

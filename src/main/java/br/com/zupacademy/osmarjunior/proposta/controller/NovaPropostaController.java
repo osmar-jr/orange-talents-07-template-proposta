@@ -1,9 +1,13 @@
 package br.com.zupacademy.osmarjunior.proposta.controller;
 
 import br.com.zupacademy.osmarjunior.proposta.controller.request.NovaPropostaRequest;
+import br.com.zupacademy.osmarjunior.proposta.model.Cartao;
 import br.com.zupacademy.osmarjunior.proposta.model.Proposta;
 import br.com.zupacademy.osmarjunior.proposta.model.enums.ResultadoSolicitacao;
+import br.com.zupacademy.osmarjunior.proposta.repository.CartaoRepository;
 import br.com.zupacademy.osmarjunior.proposta.service.AnaliseCartaoService;
+import br.com.zupacademy.osmarjunior.proposta.service.BloqueioCartaoService;
+import br.com.zupacademy.osmarjunior.proposta.service.NumeroCartaoService;
 import br.com.zupacademy.osmarjunior.proposta.validators.NaoPermitePropostaComDocumentoDuplicado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
