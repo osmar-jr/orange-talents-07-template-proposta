@@ -5,6 +5,7 @@ import br.com.zupacademy.osmarjunior.proposta.model.Aviso;
 import br.com.zupacademy.osmarjunior.proposta.model.Cartao;
 import br.com.zupacademy.osmarjunior.proposta.repository.AvisoRepository;
 import br.com.zupacademy.osmarjunior.proposta.repository.CartaoRepository;
+import br.com.zupacademy.osmarjunior.proposta.service.AvisoViagemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +27,13 @@ public class AvisoController {
     @Autowired
     private AvisoRepository avisoRepository;
 
+    @Autowired
+    private AvisoViagemService avisoViagemService;
+
     @PostMapping
     public ResponseEntity<?> adicionarAviso(@PathVariable("cartaoId") String cartaoId,
                                             HttpServletRequest request,
-                                            @Valid AvisoRequest avisoRequest,
+                                            @RequestBody @Valid AvisoRequest avisoRequest,
                                             UriComponentsBuilder uriComponentsBuilder){
         Optional<Cartao> optionalCartao = cartaoRepository.findByNumeroCartao(cartaoId);
 
@@ -41,6 +45,8 @@ public class AvisoController {
         String userAgent = request.getHeader("User-Agent");
         String ip = request.getHeader("X-Forwarded-For");
         Cartao cartao = optionalCartao.get();
+
+        avisoViagemService.processaAviso(avisoRequest, cartao);
 
         Aviso aviso = avisoRequest.toAviso(userAgent, ip, cartao);
         avisoRepository.save(aviso);

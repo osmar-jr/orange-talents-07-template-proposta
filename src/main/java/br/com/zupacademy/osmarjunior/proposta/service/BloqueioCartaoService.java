@@ -14,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Component
 public class BloqueioCartaoService {
 
@@ -23,11 +26,11 @@ public class BloqueioCartaoService {
     @Autowired
     private CartaoRepository cartaoRepository;
 
-    public void notificarBloqueio(String sistemaResponsavel, Cartao cartao) {
+    public void notificarBloqueio(@NotBlank String sistemaResponsavel, @NotNull Cartao cartao) {
         try {
 
             SolicitacaoBloqueio solicitacaoBloqueio = new SolicitacaoBloqueio(sistemaResponsavel);
-            ResultadoBloqueio resultadoBloqueio = cartoesClient.solicitaBloqueio(cartao.getNumeroCartao(), solicitacaoBloqueio);
+            ResultadoBloqueio resultadoBloqueio = cartoesClient.gerarBloqueio(cartao.getNumeroCartao(), solicitacaoBloqueio);
 
             StatusCartao statusCartao = resultadoBloqueio.toStatusCartao();
 
@@ -35,7 +38,7 @@ public class BloqueioCartaoService {
             cartaoRepository.save(cartao);
 
         } catch (FeignException exception){
-
+            exception.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY,
                    "Sistema da Operadora do Cartão Indisponível." +
                            " STATUS FEIGN: " + exception.status() +

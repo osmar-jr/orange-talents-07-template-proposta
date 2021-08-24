@@ -1,7 +1,9 @@
 package br.com.zupacademy.osmarjunior.proposta.clients;
 
+import br.com.zupacademy.osmarjunior.proposta.controller.request.AvisoRequest;
 import br.com.zupacademy.osmarjunior.proposta.service.request.SolicitacaoAnalise;
 import br.com.zupacademy.osmarjunior.proposta.service.request.SolicitacaoBloqueio;
+import br.com.zupacademy.osmarjunior.proposta.service.response.ResultadoAvisoViagem;
 import br.com.zupacademy.osmarjunior.proposta.service.response.ResultadoAnaliseCartao;
 import br.com.zupacademy.osmarjunior.proposta.service.response.ResultadoBloqueio;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -19,6 +21,9 @@ public interface CartoesClient {
     ResultadoAnaliseCartao gerarCartao(@RequestBody @Valid SolicitacaoAnalise solicitacaoAnalise);
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/cartoes/{id}/bloqueios")
-    ResultadoBloqueio solicitaBloqueio(@PathVariable("id") String id, @RequestBody @Valid SolicitacaoBloqueio solicitacaoBloqueio);
+    ResultadoBloqueio gerarBloqueio(@PathVariable String id, @Valid @RequestBody SolicitacaoBloqueio solicitacaoBloqueio);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/api/cartoes/{id}/avisos")
+    ResultadoAvisoViagem notificarViagem(@PathVariable String id, @Valid @RequestBody AvisoRequest avisoRequest);
 
 }

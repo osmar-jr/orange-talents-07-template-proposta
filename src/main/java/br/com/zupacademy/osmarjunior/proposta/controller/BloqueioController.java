@@ -37,10 +37,10 @@ public class BloqueioController {
     private BloqueioCartaoService bloqueioCartaoService;
 
     @PostMapping
-    public ResponseEntity<?> bloquearCartao(@PathVariable("cartaoId") @NotNull Long cartaoId,
+    public ResponseEntity<?> bloquearCartao(@PathVariable("cartaoId") @NotNull String cartaoId,
                                             HttpServletRequest request,
                                             UriComponentsBuilder uri){
-        Optional<Cartao> optionalCartao = cartaoRepository.findById(cartaoId);
+        Optional<Cartao> optionalCartao = cartaoRepository.findByNumeroCartao(cartaoId);
         if(optionalCartao.isEmpty()){
             return ResponseEntity.notFound().build();
         }
