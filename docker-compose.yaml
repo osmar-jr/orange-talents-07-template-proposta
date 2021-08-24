@@ -148,6 +148,8 @@ services:
       DATABASE_USER: root
       DATABASE_PASSWORD: root
       DDL: update
+      NOME_DA_APLICACAO: propostas
+      AMBIENTE: desenvolvimento
       ANALISE_PROPOSTAS_CLIENT_URL: http://analise:9999
       CARTOES_CLIENT_URL: http://contas:8888
       KEYCLOAK_ISSUER_URI: http://keycloak:18080/auth/realms/proposta-realm
