@@ -88,4 +88,8 @@ public class Cartao {
             this.vencimentos.add(vencimentoDto.toVencimento(this));
         }
     }
+
+    public Long getId() {
+        return id;
+    }
 }

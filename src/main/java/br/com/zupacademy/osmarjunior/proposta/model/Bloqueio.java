@@ -6,6 +6,7 @@ import java.util.Objects;
 
 @Entity
 public class Bloqueio {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -22,6 +23,9 @@ public class Bloqueio {
     @ManyToOne
     private Cartao cartao;
 
+    private String userAgent;
+    private String ip;
+
     @Deprecated
     public Bloqueio() {
     }
@@ -32,6 +36,18 @@ public class Bloqueio {
         this.sistemaResponsavel = sistemaResponsavel;
         this.ativo = ativo;
         this.cartao = cartao;
+    }
+
+    public Bloqueio(String userAgent, String ip, Cartao cartao) {
+        this.userAgent = userAgent;
+        this.ip = ip;
+        this.cartao = cartao;
+        this.bloqueadoEm = LocalDateTime.now();
+        this.ativo = true;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
