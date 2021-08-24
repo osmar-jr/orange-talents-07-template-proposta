@@ -1,6 +1,11 @@
 package br.com.zupacademy.osmarjunior.proposta.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -10,8 +15,12 @@ public class Aviso {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String validoAte;
+    private LocalDate validoAte;
     private String destino;
+
+    private String userAgent;
+    private String ip;
+    private LocalDateTime criadoEm = LocalDateTime.now();
 
     @ManyToOne
     private Cartao cartao;
@@ -20,10 +29,27 @@ public class Aviso {
     public Aviso() {
     }
 
-    public Aviso(String validoAte, String destino, Cartao cartao) {
+    public Aviso(LocalDate validoAte, String destino, Cartao cartao) {
         this.validoAte = validoAte;
         this.destino = destino;
         this.cartao = cartao;
+    }
+
+    public Aviso(@NotNull @Future LocalDate validoAte,
+                 @NotBlank String destino,
+                 String userAgent,
+                 String ip,
+                 @NotNull Cartao cartao) {
+
+        this.validoAte = validoAte;
+        this.destino = destino;
+        this.userAgent = userAgent;
+        this.ip = ip;
+        this.cartao = cartao;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
