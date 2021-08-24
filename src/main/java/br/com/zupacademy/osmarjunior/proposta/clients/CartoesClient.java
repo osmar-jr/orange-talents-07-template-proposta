@@ -19,6 +19,6 @@ public interface CartoesClient {
     ResultadoAnaliseCartao gerarCartao(@RequestBody @Valid SolicitacaoAnalise solicitacaoAnalise);
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/cartoes/{id}/bloqueios")
-    ResultadoBloqueio solicitaBloqueio(@PathVariable("id") Long id, @RequestBody @Valid SolicitacaoBloqueio solicitacaoBloqueio);
+    ResultadoBloqueio solicitaBloqueio(@PathVariable("id") String id, @RequestBody @Valid SolicitacaoBloqueio solicitacaoBloqueio);
 
 }

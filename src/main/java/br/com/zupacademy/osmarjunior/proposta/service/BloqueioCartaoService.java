@@ -27,7 +27,7 @@ public class BloqueioCartaoService {
         try {
 
             SolicitacaoBloqueio solicitacaoBloqueio = new SolicitacaoBloqueio(sistemaResponsavel);
-            ResultadoBloqueio resultadoBloqueio = cartoesClient.solicitaBloqueio(cartao.getId(), solicitacaoBloqueio);
+            ResultadoBloqueio resultadoBloqueio = cartoesClient.solicitaBloqueio(cartao.getNumeroCartao(), solicitacaoBloqueio);
 
             StatusCartao statusCartao = resultadoBloqueio.toStatusCartao();
 
