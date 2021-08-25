@@ -18,6 +18,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                 .antMatchers(HttpMethod.POST, "/api/v1/propostas").hasAuthority("SCOPE_proposta-escopo")
                                 .antMatchers(HttpMethod.POST, "/api/v1/biometrias").hasAuthority("SCOPE_proposta-escopo")
                                 .antMatchers(HttpMethod.POST, "/api/v1/cartoes/**").hasAuthority("SCOPE_proposta-escopo")
+                                .antMatchers(HttpMethod.GET, "/actuator/prometheus/**").permitAll()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
     }
