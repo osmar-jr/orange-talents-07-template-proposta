@@ -43,4 +43,8 @@ public class Carteira {
     public int hashCode() {
         return Objects.hash(id, idCarteiraCartoesClient, email, associadaEm, emissor, cartao);
     }
+
+    public Long getId() {
+        return id;
+    }
 }
