@@ -142,6 +142,7 @@ services:
     depends_on:
       - mysql-propostas
       - analise
+      - contas
       - keycloak
     environment:
       URL_DATABASE: jdbc:mysql://mysql-propostas:3306/proposta
@@ -154,6 +155,13 @@ services:
       CARTOES_CLIENT_URL: http://contas:8888
       KEYCLOAK_ISSUER_URI: http://keycloak:18080/auth/realms/proposta-realm
       KEYCLOAK_JWKS_URI: http://keycloak:18080/auth/realms/proposta-realm/protocol/openid-connect/certs
+      JAEGER_ENABLED: true
+      OPENTRACING_FEIGN_ENABLE: true
+      OPENTRACING_REDIS_ENABLE: true
+      JAEGER_ENDPOINT: http://jaeger:14268/api/traces
+      JAEGER_SAMPLER: 1
+      JAEGER_SAMPLER_DECISION: true
+      JAEGER_SAMPLER_TRACES_PER_SECOND: 10
     restart: on-failure
 
   mysql-propostas:
