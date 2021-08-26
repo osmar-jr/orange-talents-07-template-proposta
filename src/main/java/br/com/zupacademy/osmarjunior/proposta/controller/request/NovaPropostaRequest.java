@@ -3,6 +3,7 @@ package br.com.zupacademy.osmarjunior.proposta.controller.request;
 import br.com.zupacademy.osmarjunior.proposta.annotations.CpfOrCnpj;
 import br.com.zupacademy.osmarjunior.proposta.model.Endereco;
 import br.com.zupacademy.osmarjunior.proposta.model.Proposta;
+import br.com.zupacademy.osmarjunior.proposta.model.utils.DocumentoLimpo;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import javax.validation.Valid;
@@ -17,16 +18,20 @@ public class NovaPropostaRequest {
     @NotBlank
     private String nome;
 
-    @NotBlank @CpfOrCnpj
+    @NotBlank
+    @CpfOrCnpj
     private String cpfOuCnpj;
 
-    @NotBlank @Email
+    @NotBlank
+    @Email
     private String email;
 
-    @NotNull @Positive
+    @NotNull
+    @Positive
     private BigDecimal salario;
 
-    @NotNull @Valid
+    @NotNull
+    @Valid
     private EnderecoRequest endereco;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -58,6 +63,6 @@ public class NovaPropostaRequest {
 
     public Proposta toProposta() {
         Endereco novoEndereco = this.endereco.toEndereco();
-        return new Proposta(this.nome, this.cpfOuCnpj, this.email, this.salario, novoEndereco);
+        return new Proposta(this.nome, new DocumentoLimpo(this.cpfOuCnpj), this.email, this.salario, novoEndereco);
     }
 }

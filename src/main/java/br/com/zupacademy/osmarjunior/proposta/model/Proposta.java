@@ -1,13 +1,9 @@
 package br.com.zupacademy.osmarjunior.proposta.model;
 
-import br.com.zupacademy.osmarjunior.proposta.annotations.CpfOrCnpj;
 import br.com.zupacademy.osmarjunior.proposta.controller.response.PropostaResponse;
 import br.com.zupacademy.osmarjunior.proposta.model.enums.StatusProposta;
+import br.com.zupacademy.osmarjunior.proposta.model.utils.DocumentoLimpo;
 import br.com.zupacademy.osmarjunior.proposta.service.request.SolicitacaoAnalise;
-import br.com.zupacademy.osmarjunior.proposta.service.response.dto.RenegociacaoDto;
-import br.com.zupacademy.osmarjunior.proposta.service.response.dto.VencimentoDto;
-import ch.qos.logback.core.util.COWArrayList;
-import com.zaxxer.hikari.util.ConcurrentBag;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -17,11 +13,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 
 @Entity
 public class Proposta {
@@ -34,17 +25,21 @@ public class Proposta {
     @NotBlank
     private String nome;
 
-    @NotBlank @CpfOrCnpj
+    @NotBlank
     @Column(unique = true)
     private String cpfOuCnpj;
 
-    @NotBlank @Email
+    @NotBlank
+    @Email
     private String email;
 
-    @NotNull @Positive
+    @NotNull
+    @Positive
     private BigDecimal salario;
 
-    @NotNull @Valid @Embedded
+    @NotNull
+    @Valid
+    @Embedded
     private Endereco endereco;
 
     @Enumerated(EnumType.STRING)
@@ -58,12 +53,12 @@ public class Proposta {
     }
 
     public Proposta(@NotBlank String nome,
-                    @NotBlank String cpfOuCnpj,
+                    @NotNull @Valid DocumentoLimpo documentoLimpo,
                     @NotBlank @Email String email,
                     @NotNull @Positive BigDecimal salario,
                     @NotNull @Valid Endereco endereco) {
         this.nome = nome;
-        this.cpfOuCnpj = cpfOuCnpj;
+        this.cpfOuCnpj = documentoLimpo.hash();
         this.email = email;
         this.salario = salario;
         this.endereco = endereco;

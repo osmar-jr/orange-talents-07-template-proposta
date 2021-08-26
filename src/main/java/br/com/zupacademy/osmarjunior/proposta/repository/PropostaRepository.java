@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface PropostaRepository extends JpaRepository<Proposta, String> {
 
-    List<Proposta> findByCpfOuCnpj(String cpfOuCnpj);
-
     Collection<Proposta> findByStatusPropostaAndCartaoIsNull(StatusProposta statusProposta);
+
+    Optional<Proposta> findByEmail(String email);
+
 }
