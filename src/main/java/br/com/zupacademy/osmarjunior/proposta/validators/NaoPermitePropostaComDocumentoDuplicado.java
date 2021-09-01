@@ -34,9 +34,9 @@ public class NaoPermitePropostaComDocumentoDuplicado implements Validator {
         String cpfOuCnpj = request.getCpfOuCnpj();
 
         DocumentoLimpo documentoLimpo = new DocumentoLimpo(request.getCpfOuCnpj());
-        String documentoHash = documentoLimpo.hash();
+        String documentoHash = documentoLimpo.getHash();
 
-        Query query = entityManager.createQuery("select p from Proposta p where p.cpfOuCnpj=:hash");
+        Query query = entityManager.createQuery("select p from Proposta p where p.cpfOuCnpjHash=:hash");
         query.setParameter("hash", documentoHash);
 
         List<?> resultList = query.getResultList();

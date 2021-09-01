@@ -28,15 +28,6 @@ public class CarteiraDigitalRequest {
         this.emissor = emissor;
     }
 
-    @Override
-    public String toString() {
-        return "CarteiraDigitalRequest{" +
-                "email='" + email + '\'' +
-                ", tostring='" + emissor.toString() + '\'' +
-                ", carteira=" + emissor +
-                '}';
-    }
-
     public SolicitacaoCarteira toSolicitacaoCarteira() {
         return new SolicitacaoCarteira(this.email, this.emissor.toString());
     }

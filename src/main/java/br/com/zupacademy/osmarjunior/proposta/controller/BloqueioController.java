@@ -5,6 +5,8 @@ import br.com.zupacademy.osmarjunior.proposta.model.Cartao;
 import br.com.zupacademy.osmarjunior.proposta.repository.BloqueioRepository;
 import br.com.zupacademy.osmarjunior.proposta.repository.CartaoRepository;
 import br.com.zupacademy.osmarjunior.proposta.service.BloqueioCartaoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,18 +38,22 @@ public class BloqueioController {
     @Autowired
     private BloqueioCartaoService bloqueioCartaoService;
 
+    private final Logger logger = LoggerFactory.getLogger(BloqueioController.class);
+
     @PostMapping
     public ResponseEntity<?> bloquearCartao(@PathVariable("cartaoId") @NotNull String cartaoId,
                                             HttpServletRequest request,
                                             UriComponentsBuilder uri){
         Optional<Cartao> optionalCartao = cartaoRepository.findByNumeroCartao(cartaoId);
         if(optionalCartao.isEmpty()){
+            logger.error("Cartão informando a função de bloqueio não existe.");
             return ResponseEntity.notFound().build();
         }
 
         Cartao cartao = optionalCartao.get();
         Collection<Bloqueio> bloqueios = bloqueioRepository.findByCartaoAndAtivoTrue(cartao);
         if(!bloqueios.isEmpty()){
+            logger.error("O cartão informado já está bloqueado.");
             return ResponseEntity.unprocessableEntity().body("Cartao informado já possui bloqueio ativo.");
         }
 
@@ -56,6 +62,7 @@ public class BloqueioController {
         bloqueioCartaoService.notificarBloqueio(userAgent, cartao);
 
         if(!cartao.isBloqueado()){
+            logger.error("Solicitação de bloqueio foi concluida no sistema legado, mas houve erro na aplicação local.");
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Erro ao processar bloqueio no servidor interno.");
         }
@@ -66,6 +73,8 @@ public class BloqueioController {
         URI location = uri.path("/api/v1/cartoes/{cartaoId}/bloqueios/{bloqueioId}")
                 .buildAndExpand(cartao.getId(), bloqueio.getId())
                 .toUri();
+
+        logger.info("O bloqueio foi efetuado com sucesso. Link: " + location.toString());
         return ResponseEntity.ok().location(location).build();
     }
 }

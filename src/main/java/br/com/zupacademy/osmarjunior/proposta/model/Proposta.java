@@ -27,7 +27,11 @@ public class Proposta {
 
     @NotBlank
     @Column(unique = true)
-    private String cpfOuCnpj;
+    private String cpfOuCnpjEncrypted;
+
+    @NotBlank
+    @Column(unique = true)
+    private String cpfOuCnpjHash;
 
     @NotBlank
     @Email
@@ -58,7 +62,8 @@ public class Proposta {
                     @NotNull @Positive BigDecimal salario,
                     @NotNull @Valid Endereco endereco) {
         this.nome = nome;
-        this.cpfOuCnpj = documentoLimpo.hash();
+        this.cpfOuCnpjHash = documentoLimpo.getHash();
+        this.cpfOuCnpjEncrypted = documentoLimpo.encrypt();
         this.email = email;
         this.salario = salario;
         this.endereco = endereco;
@@ -72,7 +77,7 @@ public class Proposta {
     }
 
     public SolicitacaoAnalise toSolicitacaoAnalise() {
-        return new SolicitacaoAnalise(this.cpfOuCnpj, this.nome, this.id);
+        return new SolicitacaoAnalise(DocumentoLimpo.decrypt(this.cpfOuCnpjEncrypted, this.cpfOuCnpjHash), this.nome, this.id);
     }
 
     public void setStatusProposta(StatusProposta statusProposta) {

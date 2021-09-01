@@ -3,8 +3,10 @@ package br.com.zupacademy.osmarjunior.proposta.controller;
 import br.com.zupacademy.osmarjunior.proposta.controller.request.NovaPropostaRequest;
 import br.com.zupacademy.osmarjunior.proposta.model.Proposta;
 import br.com.zupacademy.osmarjunior.proposta.model.enums.ResultadoSolicitacao;
-import br.com.zupacademy.osmarjunior.proposta.service.AnaliseCartaoService;
+import br.com.zupacademy.osmarjunior.proposta.service.Analisa;
 import br.com.zupacademy.osmarjunior.proposta.validators.NaoPermitePropostaComDocumentoDuplicado;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
@@ -28,7 +30,9 @@ public class NovaPropostaController {
     private NaoPermitePropostaComDocumentoDuplicado naoPermitePropostaComDocumentoDuplicado;
 
     @Autowired
-    private AnaliseCartaoService analiseCartaoService;
+    private Analisa analiseCartaoService;
+
+    private final Logger logger = LoggerFactory.getLogger(NovaPropostaController.class);
 
     @InitBinder
     public void init(WebDataBinder webDataBinder){
@@ -49,6 +53,7 @@ public class NovaPropostaController {
                 .path("/api/v1/propostas/{id}")
                 .buildAndExpand(proposta.getId())
                 .toUri();
+        logger.info("Nova Proposta Criada com Sucesso. Link: " + createdResourceLink.toString());
         return ResponseEntity.created(createdResourceLink).build();
     }
 }

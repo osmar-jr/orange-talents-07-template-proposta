@@ -6,6 +6,8 @@ import br.com.zupacademy.osmarjunior.proposta.model.Carteira;
 import br.com.zupacademy.osmarjunior.proposta.repository.CartaoRepository;
 import br.com.zupacademy.osmarjunior.proposta.repository.CarteiraRepository;
 import br.com.zupacademy.osmarjunior.proposta.service.SolicitaCarteiraService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,12 +32,15 @@ public class CarteiraController {
     @Autowired
     private SolicitaCarteiraService solicitaCarteiraService;
 
+    private final Logger logger = LoggerFactory.getLogger(CarteiraController.class);
+
     @PostMapping
     public ResponseEntity<?> solicitaCarteira(@PathVariable("cartaoId") String cartaoId,
                                               @RequestBody @Valid CarteiraDigitalRequest carteiraDigitalRequest,
                                               UriComponentsBuilder uriComponentsBuilder){
         Optional<Cartao> optionalCartao = cartaoRepository.findByNumeroCartao(cartaoId);
         if(optionalCartao.isEmpty()){
+            logger.error("Cartão informado na solicitação de carteira não existe.");
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("O cartão informado não foi encontrado no sistema.");
@@ -45,6 +50,7 @@ public class CarteiraController {
         String nomeEmissor = carteiraDigitalRequest.getValorEmissor();
         Collection<Carteira> carteiras = carteiraRepository.findByCartaoAndEmissor(cartao, nomeEmissor);
         if(!carteiras.isEmpty()){
+            logger.error("A carteira solicitada já está associada ao cartão informado.");
             return ResponseEntity
                     .unprocessableEntity()
                     .body("O cartao informado já está associado ao serviço " + nomeEmissor + ".");
@@ -58,6 +64,7 @@ public class CarteiraController {
                 .buildAndExpand(cartao.getId(), carteira.getId())
                 .toUri();
 
+        logger.info("Carteira inserida com sucesso. Link: " + carteiraLocation.toString());
         return ResponseEntity
                 .created(carteiraLocation)
                 .build();

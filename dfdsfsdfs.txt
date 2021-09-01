@@ -1,0 +1,2 @@
+-Dspring.profiles.active=dev -DURL_DATABASE=jdbc:mysql://localhost:3306/proposta?serverTimeZone=UTC -DDATABASE_USER=root -DDATABASE_PASSWORD=root -DDLL=update -DCARTOES_CLIENT_URL=http://localhost:8888 -DANALISE_PROPOSTAS_CLIENT_URL: http://localhost:9999
+

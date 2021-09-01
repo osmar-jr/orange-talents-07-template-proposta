@@ -4,6 +4,8 @@ import br.com.zupacademy.osmarjunior.proposta.controller.request.NovaBiometriaRe
 import br.com.zupacademy.osmarjunior.proposta.model.Biometria;
 import br.com.zupacademy.osmarjunior.proposta.model.Cartao;
 import br.com.zupacademy.osmarjunior.proposta.repository.CartaoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,8 @@ public class BiometriaController {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private final Logger logger = LoggerFactory.getLogger(BiometriaController.class);
+
     @PostMapping
     @Transactional
     public ResponseEntity<?> criarBiometria(@RequestParam("numeroCartao") @NotBlank String numeroCartao,
@@ -41,6 +45,7 @@ public class BiometriaController {
                                             UriComponentsBuilder uri){
         Optional<Cartao> optionalCartao = cartaoRepository.findByNumeroCartao(numeroCartao);
         if(optionalCartao.isEmpty()){
+            logger.error("Cartão informando a função de biometria não existe.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "O cartão informado não existe no sistema.");
         }
@@ -51,7 +56,7 @@ public class BiometriaController {
         URI biometriaUrl = uri.path("/api/v1/biometrias/{biometriaId}")
                 .buildAndExpand(biometria.getId())
                 .toUri();
-
+        logger.info("Nova biometria gerada. Link: " + biometriaUrl.toString());
         return ResponseEntity.created(biometriaUrl).build();
     }
 }
